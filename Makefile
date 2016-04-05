@@ -55,7 +55,7 @@ lbfgs: bin/lbfgs.dmlc
 
 # lbfgs fm
 learn/lbfgs-fm/fm.dmlc: learn/lbfgs-fm/fm.cc | repo/rabit/lib/librabit.a repo/dmlc-core/libdmlc.a
-        +       $(MAKE) -C learn/lbfgs-fm fm.dmlc DEPS_PATH=$(DEPS_PATH) CXX=$(CXX)
+	+	$(MAKE) -C learn/lbfgs-fm fm.dmlc DEPS_PATH=$(DEPS_PATH) CXX=$(CXX)
 
 bin/fm.dmlc: learn/lbfgs-fm/fm.dmlc
 	cp $+ $@
