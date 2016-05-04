@@ -1,6 +1,10 @@
 <img src="http://parameterserver.org/images/parameterserver.png" alt="Parameter Server">
 [![Build Status](https://travis-ci.org/dmlc/ps-lite.svg?branch=master)](https://travis-ci.org/dmlc/ps-lite)
 
+### Note
+
+A fixed version used for difacto, more info pls check https://github.com/dmlc/ps-lite
+
 ### Introduction
 
 `ps-lite` is a high-performance implementation of the parameter server
@@ -51,19 +55,3 @@ Then clone and build
 git clone https://github.com/dmlc/ps-lite
 cd ps-lite && make deps -j4 && make -j4
 ```
-
-## Documents
-
-- [API Documents](http://www.cs.cmu.edu/~muli/ps-lite/)
-- [Tutorials](guide/)
-- Open source projects using `ps-lite`
-  - [Wormhole](https://github.com/dmlc/wormhole) for distributed linear method, factorization machine, etc
-  - [CXXNET](https://github.com/dmlc/cxxnet) and [Minverva](https://github.com/minerva-developers/minerva) for distributed deep neural networks.
-- Research papers
-  1. Mu Li, Dave Andersen, Alex Smola, Junwoo Park, Amr Ahmed, Vanja Josifovski,
-     James Long, Eugene Shekita, Bor-Yiing
-     Su. [Scaling Distributed Machine Learning with the Parameter Server](http://www.cs.cmu.edu/~muli/file/parameter_server_osdi14.pdf). In
-     Operating Systems Design and Implementation (OSDI), 2014
-  2. Mu Li, Dave Andersen, Alex Smola, and Kai
-     Yu. [Communication Efficient Distributed Machine Learning with the Parameter Server](http://www.cs.cmu.edu/~muli/file/parameter_server_nips14.pdf). In
-     Neural Information Processing Systems (NIPS), 2014
