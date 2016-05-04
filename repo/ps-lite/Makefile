@@ -1,52 +1,68 @@
-ifdef config
-include $(config)
+ifndef config
+ifneq ("$(wildcard ./config.mk)","")
+config = ./config.mk
+else
+config = make/config.mk
+endif
 endif
 
+include $(config)
 include make/ps.mk
 
-ifndef CXX
-CXX = g++
+ifndef OPT
+OPT  = -O3 -ggdb
 endif
 
 ifndef DEPS_PATH
 DEPS_PATH = $(shell pwd)/deps
 endif
 
-
 ifndef PROTOC
 PROTOC = ${DEPS_PATH}/bin/protoc
 endif
 
-INCPATH = -I./src -I./include -I$(DEPS_PATH)/include
-CFLAGS = -std=c++11 -msse2 -fPIC -O3 -ggdb -Wall -finline-functions $(INCPATH) $(ADD_CFLAGS)
+WARN = -Wall -finline-functions
+INCPATH = -I./src -I$(DEPS_PATH)/include $(EXTRA_INCLUDES)
+CFLAGS = -std=c++11 -msse2 -fPIC $(WARN) $(OPT) $(INCPATH) $(PS_CFLAGS) $(EXTRA_CFLAGS)
 
-all: ps test
+PS_LIB = build/libps.a
+PS_MAIN = build/libps_main.a
 
-include make/deps.mk
+all: deps ps guide
 
 clean:
-	rm -rf build $(TEST) tests/*.d
+	rm -rf build
 	find src -name "*.pb.[ch]*" -delete
 
-lint:
-	python tests/lint.py ps all include/ps src
 
-ps: build/libps.a
 
-OBJS = $(addprefix build/, customer.o postoffice.o van.o meta.pb.o)
-build/libps.a: $(OBJS)
+ps: $(PS_LIB) $(PS_MAIN)
+
+ps_srcs	= $(wildcard src/*.cc src/*/*.cc)
+ps_protos	= $(wildcard src/proto/*.proto)
+ps_objs	= $(patsubst src/%.proto, build/%.pb.o, $(ps_protos)) \
+			  $(patsubst src/%.cc, build/%.o, $(ps_srcs))
+
+build/libps.a: $(patsubst %.proto, %.pb.h, $(ps_protos)) $(ps_objs)
 	ar crv $@ $(filter %.o, $?)
 
-build/%.o: src/%.cc ${ZMQ} src/meta.pb.h
+build/libps_main.a: build/ps_main.o
+	ar crv $@ $?
+
+build/%.o: src/%.cc
 	@mkdir -p $(@D)
 	$(CXX) $(INCPATH) -std=c++0x -MM -MT build/$*.o $< >build/$*.d
 	$(CXX) $(CFLAGS) -c $< -o $@
 
-src/%.pb.cc src/%.pb.h : src/%.proto ${PROTOBUF}
+%.pb.cc %.pb.h : %.proto
 	$(PROTOC) --cpp_out=./src --proto_path=./src $<
 
--include build/*.d
 -include build/*/*.d
+-include build/*/*/*.d
+-include test/ps_test.mk
+-include guide/ps_guide.mk
 
-include tests/test.mk
-test: $(TEST)
+# deps
+include make/deps.mk
+
+deps: gflags glog protobuf zmq lz4 cityhash
