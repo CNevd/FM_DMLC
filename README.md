@@ -27,8 +27,7 @@ List of Tools
 Build & Run
 ====
 
-* Requires a C++11 compiler (e.g.~`g++ >=4.8`) and `git`. Install them on Ubuntu
-  >= 13.10
+* Requires a C++11 compiler (e.g.~`g++ >=4.8`) and `git`. Install them on Ubuntu >= 13.10
 
 * Type `make` to build all deps and tools
 
