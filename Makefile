@@ -16,7 +16,7 @@ REPOS = $(addprefix repo/, dmlc-core ps-lite rabit)
 
 .PHONY: clean all test pull
 
-all: lbfgs fm difacto
+all: lbfgs fm difacto linear
 ### repos and deps
 
 # dmlc-core
@@ -89,6 +89,14 @@ bin/difacto.dmlc: learn/difacto/build/difacto.dmlc
 difacto: bin/difacto.dmlc
 
 
+# linear
+learn/linear/build/linear.dmlc: ps-lite core repo/ps-lite/build/libps.a repo/dmlc-core/libdmlc.a
+	$(MAKE) -C learn/linear config=$(config) DEPS_PATH=$(DEPS_PATH) CXX=$(CXX)
+
+bin/linear.dmlc: learn/linear/build/linear.dmlc
+	cp $+ $@
+
+linear: bin/linear.dmlc
 
 pull:
 	for prefix in $(REPOS); do \
