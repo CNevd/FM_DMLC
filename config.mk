@@ -20,6 +20,7 @@ USE_GLOG = 1
 # whether use AWS S3 support during compile, which depends libcurl4-openssl-dev
 # you can install it on ubuntu via
 #   sudo apt-get install libcurl4-openssl-dev
+
 USE_S3 = 0
 
 # whether use HDFS support during compile. libhdfs is required
