@@ -1,4 +1,4 @@
-ifneq ("$(wildcard ../config.mk)","")
+ifneq ("$(wildcard ../../config.mk)","")
 	config = ../../config.mk
 else
 	config = ../../make/config.mk
