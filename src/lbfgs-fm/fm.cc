@@ -268,8 +268,8 @@ class FmObjFunction : public solver::IObjFunction<float> {
       static std:: vector<float> tmp(size,0);
       static std:: vector<std::vector<float> > tmp_out_grad(nthread,tmp);
       #pragma omp parallel for schedule(static)
-      for (size_t i = 0; i < batch.size; ++i) {
-        Row<unsigned> v = batch[i];
+      for (size_t i_b = 0; i_b < batch.size; ++i_b) {
+        Row<unsigned> v = batch[i_b];
         int thread_id = omp_get_thread_num();
         float py = model.param.Predict(weight, v);
         float grad = model.param.PredToGrad(v.label, py) * v.weight;
